@@ -3,9 +3,6 @@
 use strict;
 use warnings;
 
-my $template = <<EOT;
-EOT
-
 my $usage = <<EOU;
 usage: $0 host
 
