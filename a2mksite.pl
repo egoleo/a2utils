@@ -17,7 +17,9 @@ die $usage unless scalar(@ARGV) == 1;
 my $host = $ARGV[0];
 mkdir "/srv/www/$host";
 mkdir "/srv/www/$host/htdocs";
-# TODO: chown htdocs directory
+
+my (undef, undef, $uid, $gid) = getpwnam("www-data");
+chown $uid, $gid, "/srv/www/$host/htdocs";
 
 open FILE, ">/etc/apache2/sites-available/$host" or die $!;
 
@@ -28,7 +30,7 @@ print FILE <<EOT;
 
     DocumentRoot	/srv/www/$host/htdocs
 
-    <Directory>
+    <Directory /srv/www/$host/htdocs>
 	Options		Indexes FollowSymLinks MultiViews
 	AllowOverride	None
 	Order		allow,deny
