@@ -1,0 +1,11 @@
+Apache 2 Utils
+==============
+
+This is intended to be a collection of utilities for working with the apache2
+web server.
+
+Currently there is only a single script available, a2mksite. It is raw, 
+assumes that you are on Debian and that you want your virtual hosts set up
+exactly the way I do. That is because I wrote the script to speed up my own
+work first and foremost, but I would love to see the script one day work on
+other distros/operating systems as well and to be have more options.
