@@ -3,6 +3,10 @@
 use strict;
 use warnings;
 
+my %config = (
+    'vhost_dir' => '/srv/www'
+);
+
 my $usage = <<EOU;
 usage: $0 host
 
@@ -12,11 +16,13 @@ EOU
 die $usage unless scalar(@ARGV) == 1;
 
 my $host = $ARGV[0];
-mkdir "/srv/www/$host";
-mkdir "/srv/www/$host/htdocs";
+my $host_dir = $config{'vhost_dir'} . "/$host";
+my $docroot = $host_dir . "/htdocs";
+mkdir $host_dir;
+mkdir $docroot;
 
 my (undef, undef, $uid, $gid) = getpwnam("www-data");
-chown $uid, $gid, "/srv/www/$host/htdocs";
+chown $uid, $gid, $docroot;
 
 open FILE, ">/etc/apache2/sites-available/$host" or die $!;
 
@@ -25,9 +31,9 @@ print FILE <<EOT;
     ServerAdmin		postmaster\@$host
     ServerName		$host
 
-    DocumentRoot	/srv/www/$host/htdocs
+    DocumentRoot	$docroot
 
-    <Directory /srv/www/$host/htdocs>
+    <Directory $docroot>
 	Options		Indexes FollowSymLinks MultiViews
 	AllowOverride	None
 	Order		allow,deny
