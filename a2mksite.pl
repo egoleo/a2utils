@@ -3,9 +3,27 @@
 use strict;
 use warnings;
 
-my %config = (
-    'vhost_dir' => '/srv/www'
-);
+# Trivial configuration file reader. This is just here to avoid deps as long
+# as I can.
+sub configure {
+    my ($file, $conf) = @_;
+
+    open FILE, $file;
+    while (<FILE>) {
+	next if /^\s*#/ or /^\s*$/;
+
+	my ($k, $v) = split /\s*=\s*/;
+	chomp($conf->{$k} = $v);
+    }
+
+    close FILE;
+}
+
+my $config = {
+    vhost_dir => '/srv/www'
+};
+
+configure("a2utils.conf", $config);
 
 my $usage = <<EOU;
 usage: $0 host
@@ -16,7 +34,7 @@ EOU
 die $usage unless scalar(@ARGV) == 1;
 
 my $host = $ARGV[0];
-my $host_dir = $config{'vhost_dir'} . "/$host";
+my $host_dir = $config->{'vhost_dir'} . "/$host";
 my $docroot = $host_dir . "/htdocs";
 mkdir $host_dir;
 mkdir $docroot;
