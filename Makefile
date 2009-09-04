@@ -1,6 +1,7 @@
 SHELL = /bin/sh
 PREFIX = /usr/local
 SRC = a2mksite.pl
+CONF = a2utils.conf
 FILES = a2mksite.pl LICENSE Makefile README
 DEST = a2mksite
 BUILD = a2mksite
@@ -11,6 +12,7 @@ all: install
 
 install:
 	install $(SRC) $(PREFIX)/bin/$(DEST)
+	cp -f $(CONF) $(PREFIX)/etc/
 
 archive: $(ARCHIVE)
 
